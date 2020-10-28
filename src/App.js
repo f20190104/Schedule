@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import Schedule from './Components/Schedule';
+import {ApolloClient} from 'apollo-client';
+import {ApolloProvider} from 'react-apollo';
+import {createHttpLink } from 'apollo-link-http';
+import {InMemoryCache} from 'apollo-cache-inmemory';
 
 function App() {
+  const link = createHttpLink({
+    uri: "https://schedule.hasura.app/v1/graphql"
+  });
+  const client = new ApolloClient({
+    link: link,
+    cache: new InMemoryCache()
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      <Schedule/>
+    </ApolloProvider>
   );
 }
 
